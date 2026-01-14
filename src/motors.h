@@ -1,19 +1,19 @@
 #pragma once
 
 // L298N pins
-#define ENA_PIN 25
-#define ENB_PIN 13
-#define IN1 26
-#define IN2 27
-#define IN3 14
-#define IN4 12
+#define L298N_ENA_PIN 25
+#define L298N_ENB_PIN 13
+#define L298N_LEFT_IN1_PIN 26
+#define L298N_LEFT_IN2_PIN 27
+#define L298N_RIGHT_IN3_PIN 14
+#define L298N_RIGHT_IN4_PIN 12
 
 // PWM channels
-#define ENA_CHANNEL 0
-#define ENB_CHANNEL 1
+#define L298N_LEFT_PWN_CHANNEL 0
+#define L298N_RIGHT_PWN_CHANNEL 1
 
 // Speed constants
-#define SPEED 200
+#define DRIVE_SPEED 200
 #define TURN_SPEED 120
 
 // Motor pin definitions

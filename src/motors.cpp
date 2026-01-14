@@ -13,60 +13,60 @@
 
 // Initialize motor control pins and PWM
 void motors_init() {
-    pinMode(IN1, OUTPUT);
-    pinMode(IN2, OUTPUT);
-    pinMode(IN3, OUTPUT);
-    pinMode(IN4, OUTPUT);
+    pinMode(L298N_LEFT_IN1_PIN, OUTPUT);
+    pinMode(L298N_LEFT_IN2_PIN, OUTPUT);
+    pinMode(L298N_RIGHT_IN3_PIN, OUTPUT);
+    pinMode(L298N_RIGHT_IN4_PIN, OUTPUT);
 
-    ledcSetup(ENA_CHANNEL, 5000, 8);
-    ledcSetup(ENB_CHANNEL, 5000, 8);
+    ledcSetup(L298N_LEFT_PWN_CHANNEL, 5000, 8);
+    ledcSetup(L298N_RIGHT_PWN_CHANNEL, 5000, 8);
 
-    ledcAttachPin(ENA_PIN, ENA_CHANNEL);
-    ledcAttachPin(ENB_PIN, ENB_CHANNEL);
+    ledcAttachPin(L298N_ENA_PIN, L298N_LEFT_PWN_CHANNEL);
+    ledcAttachPin(L298N_ENB_PIN, L298N_RIGHT_PWN_CHANNEL);
 }
 
 // Move the robot forward
 void Forward(){ 
-  ledcWrite(ENA_CHANNEL, SPEED); // ENA_PINble L298n A channel
-  ledcWrite(ENB_CHANNEL, SPEED); // ENA_PINble L298n B channel
-  digitalWrite(IN1,LOW); // Set IN1 LOW level
-  digitalWrite(IN2,HIGH);  // Set IN2 HIGH level
-  digitalWrite(IN3,LOW);  // Set IN3 low level
-  digitalWrite(IN4,HIGH); // Set IN4 hight level
+  ledcWrite(L298N_LEFT_PWN_CHANNEL, DRIVE_SPEED); // ENA_PINble L298n A channel
+  ledcWrite(L298N_RIGHT_PWN_CHANNEL, DRIVE_SPEED); // ENA_PINble L298n B channel
+  digitalWrite(L298N_LEFT_IN1_PIN,LOW); // Set IN1 LOW level
+  digitalWrite(L298N_LEFT_IN2_PIN,HIGH);  // Set IN2 HIGH level
+  digitalWrite(L298N_RIGHT_IN3_PIN,LOW);  // Set IN3 low level
+  digitalWrite(L298N_RIGHT_IN4_PIN,HIGH); // Set IN4 hight level
 }
 
 // Move the robot backward
 void Backward() {
-  ledcWrite(ENA_CHANNEL, SPEED);
-  ledcWrite(ENB_CHANNEL, SPEED);
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+  ledcWrite(L298N_LEFT_PWN_CHANNEL, DRIVE_SPEED);
+  ledcWrite(L298N_RIGHT_PWN_CHANNEL, DRIVE_SPEED);
+  digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
+  digitalWrite(L298N_LEFT_IN2_PIN, LOW);
+  digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
+  digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
 }
 
 // Turn the robot to the right
 void Right(){
-  ledcWrite(ENA_CHANNEL, TURN_SPEED);
-  ledcWrite(ENB_CHANNEL, TURN_SPEED);
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
+  ledcWrite(L298N_LEFT_PWN_CHANNEL, TURN_SPEED);
+  ledcWrite(L298N_RIGHT_PWN_CHANNEL, TURN_SPEED);
+  digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
+  digitalWrite(L298N_LEFT_IN2_PIN, LOW);
+  digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
+  digitalWrite(L298N_RIGHT_IN4_PIN, HIGH);
 }
 
 // Turn the robot to the left
 void Left() {
-  ledcWrite(ENA_CHANNEL, TURN_SPEED);
-  ledcWrite(ENB_CHANNEL, TURN_SPEED);
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+  ledcWrite(L298N_LEFT_PWN_CHANNEL, TURN_SPEED);
+  ledcWrite(L298N_RIGHT_PWN_CHANNEL, TURN_SPEED);
+  digitalWrite(L298N_LEFT_IN1_PIN, LOW);
+  digitalWrite(L298N_LEFT_IN2_PIN, HIGH);
+  digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
+  digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
 }
 
 // Stop the robot
 void Stop(){
-  ledcWrite(ENA_CHANNEL, 0); // Disable L298n A channel
-  ledcWrite(ENB_CHANNEL, 0); // Disable L298n B channel
+  ledcWrite(L298N_LEFT_PWN_CHANNEL, 0); // Disable L298n A channel
+  ledcWrite(L298N_RIGHT_PWN_CHANNEL, 0); // Disable L298n B channel
 }
