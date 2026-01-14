@@ -21,7 +21,7 @@ void motors_init();
 
 // Motor control functions
 void Forward();
-void Back();
+void Backward();
 void Right();
 void Left();
 void Stop();

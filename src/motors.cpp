@@ -2,14 +2,14 @@
 #include "motors.h"
 
 //    The direction of the robot's movement
-//  ENA_PIN   ENB_PIN   IN1   IN2   IN3   IN4   Description  
-//  HIGH  HIGH  HIGH  LOW   LOW   HIGH  Robot is running forward
-//  HIGH  HIGH  LOW   HIGH  HIGH  LOW   Robot is running back
+//  ENA_PIN   ENB_PIN   IN1   IN2   IN3   IN4   Description 
+//  HIGH  HIGH  HIGH  LOW   LOW   HIGH  Robot is moving forward
+//  HIGH  HIGH  LOW   HIGH  HIGH  LOW   Robot is moving backward
 //  HIGH  HIGH  LOW   HIGH  LOW   HIGH  Robot is turning left
 //  HIGH  HIGH  HIGH  LOW   HIGH  LOW   Robot is turning right
-//  HIGH  HIGH  LOW   LOW   LOW   LOW   Robot is stopped
-//  HIGH  HIGH  HIGH  HIGH  HIGH  HIGH  Robot is stopped
-//  LOW   LOW   N/A   N/A   N/A   N/A   Robot is stopped
+//  HIGH  HIGH  LOW   LOW   LOW   LOW   Robot stopped
+//  HIGH  HIGH  HIGH  HIGH  HIGH  HIGH  Robot stopped
+//  LOW   LOW   N/A   N/A   N/A   N/A   Robot stopped
 
 // Initialize motor control pins and PWM
 void motors_init() {
@@ -36,7 +36,7 @@ void Forward(){
 }
 
 // Move the robot backward
-void Back() {
+void Backward() {
   ledcWrite(ENA_CHANNEL, SPEED);
   ledcWrite(ENB_CHANNEL, SPEED);
   digitalWrite(IN1, HIGH);
