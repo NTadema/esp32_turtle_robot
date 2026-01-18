@@ -9,8 +9,8 @@
 #define L298N_RIGHT_IN4_PIN 12
 
 // PWM channels
-#define L298N_LEFT_PWN_CHANNEL 0
-#define L298N_RIGHT_PWN_CHANNEL 1
+#define L298N_LEFT_PWM_CHANNEL 2
+#define L298N_RIGHT_PWM_CHANNEL 3
 
 // Speed constants
 #define DRIVE_SPEED 200

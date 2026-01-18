@@ -15,12 +15,11 @@ float read_distance(){
     delayMicroseconds(10);
     digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
 
-     // Read echo pulse (timeout 30 ms)
+    // Read the duration of the echo pulse
     unsigned long duration = pulseIn(ULTRASONIC_ECHO_PIN, HIGH, 30000);
-    if (duration == 0) return -1; // no echo detected
-    
+
     // Read the echo pin and calculate distance
-    float distance = duration / 58.2; // Convert to cm
+    float distance = duration * 0.0343 / 2; // Convert to cm
     return distance;
 }
 

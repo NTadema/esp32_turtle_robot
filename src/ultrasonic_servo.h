@@ -7,7 +7,7 @@
 void ultrasonic_servo_init();
 
 // Set the angle of the ultrasonic servo (0 to 180 degrees)
-void ultrasonic_servo_set_angle(int angle);
+void set_ultrasonic_servo_angle(int angle);
 
 // Get the current angle of the ultrasonic servo
-int ultrasonic_servo_get_angle();
+int get_ultrasonic_servo_angle();
