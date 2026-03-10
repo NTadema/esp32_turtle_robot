@@ -16,52 +16,39 @@ void motors_init() {
     ledcAttachPin(L298N_ENB_PIN, L298N_RIGHT_PWM_CHANNEL);
 }
 
-// Move the robot forward
-void Forward(){ 
-    digitalWrite(L298N_LEFT_IN1_PIN, LOW);
-    digitalWrite(L298N_LEFT_IN2_PIN, HIGH);
-    digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
-    digitalWrite(L298N_RIGHT_IN4_PIN, HIGH);
+void set_motors_speed(int left_speed, int right_speed) {
+    // Set left motor direction
+    if (left_speed > 0) {
+        digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
+        digitalWrite(L298N_LEFT_IN2_PIN, LOW);
+    } else if (left_speed < 0) {
+        digitalWrite(L298N_LEFT_IN1_PIN, LOW);
+        digitalWrite(L298N_LEFT_IN2_PIN, HIGH);
+        left_speed = -left_speed; // Make speed positive for PWM
+    } else {
+        digitalWrite(L298N_LEFT_IN1_PIN, LOW);
+        digitalWrite(L298N_LEFT_IN2_PIN, LOW);
+    }
 
-    ledcWrite(L298N_LEFT_PWM_CHANNEL, DRIVE_SPEED);
-    ledcWrite(L298N_RIGHT_PWM_CHANNEL, DRIVE_SPEED);
-}
+    // Set right motor direction
+    if (right_speed > 0) {
+        digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
+        digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
+    } else if (right_speed < 0) {
+        digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
+        digitalWrite(L298N_RIGHT_IN4_PIN, HIGH);
+        right_speed = -right_speed; // Make speed positive for PWM
+    } else {
+        digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
+        digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
+    }
 
-// Move the robot backward
-void Backward() {
-    digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
-    digitalWrite(L298N_LEFT_IN2_PIN, LOW);
-    digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
-    digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
-
-    ledcWrite(L298N_LEFT_PWM_CHANNEL, DRIVE_SPEED);
-    ledcWrite(L298N_RIGHT_PWM_CHANNEL, DRIVE_SPEED);
-}
-
-// Turn the robot to the right
-void Right(){
-    digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
-    digitalWrite(L298N_LEFT_IN2_PIN, LOW);
-    digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
-    digitalWrite(L298N_RIGHT_IN4_PIN, HIGH);
-
-    ledcWrite(L298N_LEFT_PWM_CHANNEL, TURN_SPEED);
-    ledcWrite(L298N_RIGHT_PWM_CHANNEL, TURN_SPEED);
-}
-
-// Turn the robot to the left
-void Left() {
-    digitalWrite(L298N_LEFT_IN1_PIN, LOW);
-    digitalWrite(L298N_LEFT_IN2_PIN, HIGH);
-    digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
-    digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
-
-    ledcWrite(L298N_LEFT_PWM_CHANNEL, TURN_SPEED);
-    ledcWrite(L298N_RIGHT_PWM_CHANNEL, TURN_SPEED);
+    // Set PWM duty cycle
+    ledcWrite(L298N_LEFT_PWM_CHANNEL, left_speed);
+    ledcWrite(L298N_RIGHT_PWM_CHANNEL, right_speed);
 }
 
 // Stop the robot
-void Stop(){
-    ledcWrite(L298N_LEFT_PWM_CHANNEL, 0);
-    ledcWrite(L298N_RIGHT_PWM_CHANNEL, 0);
+void stop_motors(){
+    set_motors_speed(0, 0);
 }

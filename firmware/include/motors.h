@@ -12,16 +12,11 @@
 #define L298N_LEFT_PWM_CHANNEL 2
 #define L298N_RIGHT_PWM_CHANNEL 3
 
-// Speed constants
-#define DRIVE_SPEED 200
-#define TURN_SPEED 120
+// Speed settings
+void set_motors_speed(int left_speed, int right_speed);
 
 // Motor pin definitions
 void motors_init();
 
 // Motor control functions
-void Forward();
-void Backward();
-void Right();
-void Left();
-void Stop();
+void stop_motors();

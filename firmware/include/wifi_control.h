@@ -1,8 +1,4 @@
 #pragma once
-#include <Arduino.h>
-#include <WiFi.h>
-#include <WiFiUdp.h>
-#include "motors.h"
 
 extern unsigned long last_command_time;
 

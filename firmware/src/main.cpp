@@ -37,6 +37,6 @@ void loop() {
 
     // Safety stop
     if (millis() - last_command_time > command_timeout) {
-        Stop();
+        stop_motors();
     }
 }
