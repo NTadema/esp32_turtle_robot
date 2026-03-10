@@ -1,8 +1,6 @@
 #include "ir_remote_control.h"
 
 uint32_t last_decoded_raw_data = 0;
-unsigned long last_command_time;
-const unsigned long command_timeout = 200;
 
 void ir_remote_control_init()
 {

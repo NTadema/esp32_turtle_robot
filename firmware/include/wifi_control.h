@@ -1,7 +1,10 @@
 #pragma once
 #include <Arduino.h>
 #include <WiFi.h>
-#include <motors.h>
+#include <WiFiUdp.h>
+#include "motors.h"
+
+extern unsigned long last_command_time;
 
 // extern WiFi credentials
 extern const char* WIFI_SSID;

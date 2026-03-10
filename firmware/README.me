@@ -1,0 +1,39 @@
+# ESP32 Turtle Robot
+
+This is a small robotic platform controlled by an ESP32 with two N20 motors and an L298N motor driver. The robot currently supports **manual control using an Xbox controller** via Wi-Fi UDP packets.
+
+## Features
+
+- Manual control via Xbox controller
+  - Connect your PC to the robot Wi-Fi network `turtlebot`
+  - Run the Python controller (`controller/xbox_controller.py`)
+  - Joystick axes control forward/backward and turning
+- Safety stop if no commands are received for a short time
+
+## Notes
+
+- **Line following and autonomous behavior are not yet implemented.**  
+  Future updates will add line-following and obstacle avoidance modes.
+- The robot runs a UDP listener on port `4210` to receive commands.
+
+## Usage
+
+1. Power the robot and connect your PC to the `turtlebot` Wi-Fi network.
+2. Run the Python controller:
+   ```bash
+   cd controller
+   source venv/bin/activate  # if using virtual environment
+   python xbox_controller.py
+
+## Project Structure
+
+turtlebot/
+├── firmware/         # ESP32 firmware (PlatformIO project)
+│   ├── src/
+│   ├── include/
+│   └── platformio.ini
+├── controller/       # Python controller scripts
+│   ├── xbox_controller.py
+│   └── venv/
+├── .gitignore
+└── README.md
