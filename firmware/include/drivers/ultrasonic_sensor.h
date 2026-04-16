@@ -9,3 +9,6 @@ void ultrasonic_sensor_init();
 
 // Function to read distance from ultrasonic sensor
 float read_distance();
+
+// Function to read distance using median filtering
+float read_distance_median();

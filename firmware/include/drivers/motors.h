@@ -12,6 +12,14 @@
 #define L298N_LEFT_PWM_CHANNEL 2
 #define L298N_RIGHT_PWM_CHANNEL 3
 
+// Define motor direction
+#define LEFT_MOTOR_DIR 1
+#define RIGHT_MOTOR_DIR -1
+
+#define TURN_SPEED 120
+#define FORWARD_SPEED 150
+#define REVERSE_SPEED 120
+
 // Speed settings
 void set_motors_speed(int left_speed, int right_speed);
 

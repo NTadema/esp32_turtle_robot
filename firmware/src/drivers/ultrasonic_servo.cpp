@@ -1,6 +1,5 @@
 #include <Arduino.h>
-#include <Servo.h>
-#include "ultrasonic_servo.h"
+#include "drivers/ultrasonic_servo.h"
 
 Servo ultrasonic_servo;
 
@@ -9,7 +8,7 @@ void ultrasonic_servo_init(){
     ultrasonic_servo.attach(ULTRASONIC_SERVO_PIN, 1000, 2000);
     ultrasonic_servo.write(100); // Set to neutral position
     delay(500);
-    ultrasonic_servo.detach(); // Set to neutral position
+    //ultrasonic_servo.detach(); // Set to neutral position
 }
 
 // Set the angle of the ultrasonic servo

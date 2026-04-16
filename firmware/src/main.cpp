@@ -1,16 +1,26 @@
 #include <Arduino.h>
 #include <IRremote.hpp>
 
-#include "motors.h"
-#include "line_sensor.h"
-#include "ultrasonic_sensor.h"
-#include "ultrasonic_servo.h"
-#include "ir_remote_control.h"
-#include "wifi_control.h"
+#include "drivers/motors.h"
+#include "drivers/line_sensor.h"
+#include "drivers/ultrasonic_sensor.h"
+#include "drivers/ultrasonic_servo.h"
+#include "drivers/ir_remote_control.h"
+#include "drivers/wifi_control.h"
+
+#include "behaviors/avoid_line.h"
+#include "behaviors/avoid_object.h"
+
+#include "brain/robot_brain.h"
 
 // Global command watchdog
 unsigned long last_command_time = 0;
 const unsigned long command_timeout = 500; // ms
+
+// Turn variables
+unsigned long turn_start_time = 0;
+bool is_turning = false;
+const unsigned long TURN_DURATION = 500; // ms
 
 // Initialize all components
 void setup() {
@@ -22,6 +32,7 @@ void setup() {
     ir_remote_control_init();
     wifi_control_init();
     delay(500);
+
 }
 
 // Main loop
@@ -35,8 +46,12 @@ void loop() {
     // Handle UDP WiFi control
     wifi_control_loop();
 
-    // Safety stop
+    // Decide whether to run robot brain
     if (millis() - last_command_time > command_timeout) {
-        stop_motors();
+        // No recent manual command, run autonomous brain
+        // Autonomous mode
+        robot_brain_loop();
+    } else {
+        // Manual control active, do nothing (motors already updated by manual)
     }
 }

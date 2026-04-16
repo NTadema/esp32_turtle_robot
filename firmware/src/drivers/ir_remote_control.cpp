@@ -1,8 +1,8 @@
-#include "ir_remote_control.h"
-#include "motors.h"
+#include "drivers/ir_remote_control.h"
+#include "drivers/motors.h"
 #include <IRremote.hpp>
 
-uint32_t last_decoded_raw_data = 0;
+char32_t last_decoded_raw_data = 0;
 
 // Adjustable speed for IR control
 const int IR_DRIVE_SPEED = 180;

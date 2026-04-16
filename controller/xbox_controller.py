@@ -25,10 +25,8 @@ deadzone = 0.2
 last_command = None
 
 
+# Convert a joystick axis value in range [-1.0, 1.0] to an integer motor PWM value in range [-255, 255].
 def axis_to_speed(value):
-    """Convert a joystick axis value in range [-1.0, 1.0]
-    to an integer motor PWM value in range [-255, 255].
-    """
     return int(max(min(value * 255, 255), -255))
 
 

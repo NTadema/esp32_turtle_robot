@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "motors.h"
+#include "drivers/motors.h"
 
 // Initialize motor control pins and PWM
 void motors_init() {
@@ -16,34 +16,44 @@ void motors_init() {
     ledcAttachPin(L298N_ENB_PIN, L298N_RIGHT_PWM_CHANNEL);
 }
 
+/* 
+set_motors_speed(150, 150); // Move forward
+set_motors_speed(-150, -150); // Move backward
+set_motors_speed(150, -150); // Left turn
+set_motors_speed(-150, 150); // Right turn
+*/
+
 void set_motors_speed(int left_speed, int right_speed) {
-    // Set left motor direction
-    if (left_speed > 0) {
-        digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
-        digitalWrite(L298N_LEFT_IN2_PIN, LOW);
-    } else if (left_speed < 0) {
+
+    left_speed  *= LEFT_MOTOR_DIR;
+    right_speed *= RIGHT_MOTOR_DIR;
+
+    // Left motor
+    if (left_speed > 0) {        // forward
         digitalWrite(L298N_LEFT_IN1_PIN, LOW);
         digitalWrite(L298N_LEFT_IN2_PIN, HIGH);
-        left_speed = -left_speed; // Make speed positive for PWM
+    } else if (left_speed < 0) { // backward
+        digitalWrite(L298N_LEFT_IN1_PIN, HIGH);
+        digitalWrite(L298N_LEFT_IN2_PIN, LOW);
+        left_speed = -left_speed;
     } else {
         digitalWrite(L298N_LEFT_IN1_PIN, LOW);
         digitalWrite(L298N_LEFT_IN2_PIN, LOW);
     }
 
-    // Set right motor direction
-    if (right_speed > 0) {
+    // Right motor
+    if (right_speed > 0) {       // forward
         digitalWrite(L298N_RIGHT_IN3_PIN, HIGH);
         digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
-    } else if (right_speed < 0) {
+    } else if (right_speed < 0) { // backward
         digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
         digitalWrite(L298N_RIGHT_IN4_PIN, HIGH);
-        right_speed = -right_speed; // Make speed positive for PWM
+        right_speed = -right_speed;
     } else {
         digitalWrite(L298N_RIGHT_IN3_PIN, LOW);
         digitalWrite(L298N_RIGHT_IN4_PIN, LOW);
     }
 
-    // Set PWM duty cycle
     ledcWrite(L298N_LEFT_PWM_CHANNEL, left_speed);
     ledcWrite(L298N_RIGHT_PWM_CHANNEL, right_speed);
 }

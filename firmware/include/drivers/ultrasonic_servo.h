@@ -1,7 +1,10 @@
 #pragma once
+#include <Servo.h>
 
 // Ultrasonic servo pin
 #define ULTRASONIC_SERVO_PIN 16
+
+extern Servo ultrasonic_servo;
 
 // Initialize the ultrasonic servo
 void ultrasonic_servo_init();

@@ -10,3 +10,7 @@ void trace_sensor_init();
 
 // Sensor reading functions
 bool check_line_center();
+bool check_line_left();
+bool check_line_right();
+
+
