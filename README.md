@@ -59,7 +59,7 @@ Network settings, robot behavior parameters, motor speeds, and sensor thresholds
 The robot IP address and additional configuration details can be added here as the project evolves.
 
 ## Project Structure
-
+```text
 .
 ├── controller
 │   ├── venv
@@ -104,3 +104,4 @@ The robot IP address and additional configuration details can be added here as t
 │   └── test
 │       └── README
 └── README.me
+```
