@@ -1,21 +1,27 @@
 #pragma once
 
-#define SAFE_DISTANCE 12
-#define DANGER_DISTANCE 10
-#define SCAN_ANGLE_LEFT 130
-#define SCAN_ANGLE_CENTER 100
-#define SCAN_ANGLE_RIGHT 60
+const float OBSTACLE_THRESHOLD = 15.0; // Distance in cm to consider an obstacle
 
-// Declare variables
-extern float center_distance;
+enum ScanState {
+    MOVE_FRONT,
+    READ_FRONT,
+    MOVE_LEFT,
+    READ_LEFT,
+    MOVE_RIGHT,
+    READ_RIGHT
+};
+
+extern ScanState scan_state;
+
+extern unsigned long last_time;
+extern const unsigned long settle_time;
+
+extern float front_distance;
 extern float left_distance;
 extern float right_distance;
 
-extern unsigned long turn_start_time;
-extern bool is_turning;
-extern const unsigned long TURN_DURATION;
+extern int obstacle_left_speed;
+extern int obstacle_right_speed;
 
-void scan_environment(float &center_distance, float &left_distance, float &right_distance);
-void avoid_object_behavior(float center_distance, float left_distance, float right_distance);
-
-
+void scan_environment();
+void avoid_object_behavior();

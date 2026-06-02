@@ -65,7 +65,5 @@ void translate_ir_signal()
 
     set_motors_speed(left, right);
     last_decoded_raw_data = code;
-
-    delay(500); // optional debounce
     IrReceiver.resume();
   }

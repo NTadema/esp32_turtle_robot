@@ -5,50 +5,84 @@
 #include "drivers/ultrasonic_servo.h"
 #include "drivers/motors.h"
 
-// Environment scan
-void scan_environment(float &center_distance, float &left_distance, float &right_distance) {
-    // Center
-    set_ultrasonic_servo_angle(SCAN_ANGLE_CENTER);
-    center_distance = read_distance_median();
+float front_distance = 300;
+float left_distance = 300;
+float right_distance = 300;
 
-    // Left
-    set_ultrasonic_servo_angle(SCAN_ANGLE_LEFT);
-    left_distance = read_distance_median();
+int obstacle_left_speed = 0;
+int obstacle_right_speed = 0;
 
-    // Right
-    set_ultrasonic_servo_angle(SCAN_ANGLE_RIGHT);
-    right_distance = read_distance_median();
+unsigned long last_time = 0;
+const unsigned long settle_time = 500; // Time in ms to wait for servo to settle before reading distance
+ScanState scan_state = MOVE_FRONT;
 
-    // Return to center
-    set_ultrasonic_servo_angle(SCAN_ANGLE_CENTER);
+void scan_environment() {
+    unsigned long now = millis();
+
+    switch (scan_state) {
+
+        case MOVE_FRONT:
+            set_ultrasonic_servo_angle(100);
+            last_time = now;
+            scan_state = READ_FRONT;
+            break;
+
+        case READ_FRONT:
+            if (now - last_time >= settle_time) {
+                front_distance = read_distance_median();
+                scan_state = MOVE_LEFT;
+            }
+            break;
+
+        case MOVE_LEFT:
+            set_ultrasonic_servo_angle(45);
+            last_time = now;
+            scan_state = READ_LEFT;
+            break;
+
+        case READ_LEFT:
+            if (now - last_time >= settle_time) {
+                left_distance = read_distance_median();
+                scan_state = MOVE_RIGHT;
+            }
+            break;
+
+        case MOVE_RIGHT:
+            set_ultrasonic_servo_angle(145);
+            last_time = now;
+            scan_state = READ_RIGHT;
+            break;
+
+        case READ_RIGHT:
+            if (now - last_time >= settle_time) {
+                right_distance = read_distance_median();
+                scan_state = MOVE_FRONT;
+            }
+            break;
+    }
 }
 
-// Obstacle avoidance
-void avoid_object_behavior(float center_distance, float left_distance, float right_distance) {
-
-    // If currently turning, check if turn is finished
-    if(is_turning) {
-        if(millis() - turn_start_time >= TURN_DURATION) {
-            // Turn complete, go forward
-            set_motors_speed(FORWARD_SPEED, FORWARD_SPEED);
-            is_turning = false;
+void avoid_object_behavior() {
+    // Simple obstacle avoidance logic based on latest distance readings
+    if (front_distance < OBSTACLE_THRESHOLD) {
+        if (left_distance > right_distance) {
+            // Turn left
+            obstacle_left_speed = -TURN_SPEED;
+            obstacle_right_speed = TURN_SPEED;
+        } else {
+            // Turn right
+            obstacle_left_speed = TURN_SPEED;
+            obstacle_right_speed = -TURN_SPEED;
         }
-        return; // still turning
-    }
-
-    // Decide motion based on largest distance
-    if(center_distance >= left_distance && center_distance >= right_distance) {
-        // Path straight ahead is safest
-        set_motors_speed(FORWARD_SPEED, FORWARD_SPEED);
-    } else if(left_distance >= right_distance) {
-        // Start left turn
-        set_motors_speed(TURN_SPEED, -TURN_SPEED);
-        turn_start_time = millis();
-        is_turning = true;
-    } else {
-        // Start right turn
-        set_motors_speed(-TURN_SPEED, TURN_SPEED);
-        turn_start_time = millis();
-        is_turning = true;
+    } 
+    else
+    if (left_distance < OBSTACLE_THRESHOLD) {
+        // Turn right to avoid left obstacle
+        obstacle_left_speed = TURN_SPEED;
+        obstacle_right_speed = -TURN_SPEED;
+    } else if (right_distance < OBSTACLE_THRESHOLD) {
+        // Turn left to avoid right obstacle
+        obstacle_left_speed = -TURN_SPEED;
+        obstacle_right_speed = TURN_SPEED;
     }
 }

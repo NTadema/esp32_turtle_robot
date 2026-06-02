@@ -3,19 +3,38 @@
 #include "drivers/line_sensor.h"
 #include "drivers/motors.h"
 
+int line_left_speed = 0;
+int line_right_speed = 0;
+
+// Behavior to avoid lines detected by the line sensors
 void avoid_line_behavior() {
-    if(check_line_left()){
-        set_motors_speed(-TURN_SPEED, TURN_SPEED); // turn right
-        delay(400);
-    } 
-    else if(check_line_right()){
-        set_motors_speed(TURN_SPEED, -TURN_SPEED); // turn left
-        delay(400);
-    } 
-    else if(check_line_center()){
-        set_motors_speed(0,0);
-        delay(200);
-        set_motors_speed(-REVERSE_SPEED, -REVERSE_SPEED); // reverse
-        delay(400);
+    
+    bool left = check_line_left();
+    bool center = check_line_center();
+    bool right = check_line_right();
+
+    if (center) {
+        line_left_speed = -REVERSE_SPEED;
+        line_right_speed = -REVERSE_SPEED;
+        return;
+    }
+
+    if (left && right) {
+        // intersection: treat as center or stop
+        line_left_speed = -REVERSE_SPEED;
+        line_right_speed = -REVERSE_SPEED;
+        return;
+    }
+
+    if (left) {
+        line_left_speed = -TURN_SPEED;
+        line_right_speed = TURN_SPEED;
+        return;
+    }
+
+    if (right) {
+        line_left_speed = TURN_SPEED;
+        line_right_speed = -TURN_SPEED;
+        return;
     }
 }

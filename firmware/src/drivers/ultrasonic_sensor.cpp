@@ -1,12 +1,15 @@
 #include <Arduino.h>
 #include "drivers/ultrasonic_sensor.h"
 
+float filtered_distance = 0;
+
 // Initialize ultrasonic sensor pins
 void ultrasonic_sensor_init() {
     pinMode(ULTRASONIC_TRIG_PIN, OUTPUT);
     pinMode(ULTRASONIC_ECHO_PIN, INPUT);
 }
 
+// Read distance from ultrasonic sensor
 float read_distance(){
     // Send a microsecond pulse to trigger the ultrasonic sensor
     digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
@@ -16,15 +19,16 @@ float read_distance(){
     digitalWrite(ULTRASONIC_TRIG_PIN, LOW);
 
     // Read the duration of the echo pulse
-    unsigned long duration = pulseIn(ULTRASONIC_ECHO_PIN, HIGH, 30000);
+    unsigned long duration = pulseIn(ULTRASONIC_ECHO_PIN, HIGH, 10000);
 
     // Read the echo pin and calculate distance
     float distance = duration * 0.0343 / 2; // Convert to cm
     return distance;
 }
 
+// Read distance using median filtering
 float read_distance_median() {
-    const int num_samples = 7;
+    const int num_samples = 3;
     float samples[num_samples];
 
     int valid_count = 0;
@@ -37,13 +41,11 @@ float read_distance_median() {
         if (distance > 0 && distance < 400) {
             samples[valid_count++] = distance;
         }
-
-        delay(20); // small spacing between pings
     }
 
     // Fallback if nothing valid
     if (valid_count == 0) {
-        return 400; // treat as "far away"
+        return 400; // treat as far away
     }
 
     // Sort valid samples (insertion sort)

@@ -4,6 +4,8 @@
 #define ULTRASONIC_TRIG_PIN 19
 #define ULTRASONIC_ECHO_PIN 18
 
+extern float filtered_distance;
+
 // Function to initialize ultrasonic sensor
 void ultrasonic_sensor_init();
 
@@ -12,3 +14,6 @@ float read_distance();
 
 // Function to read distance using median filtering
 float read_distance_median();
+
+// Function to read distance using faster filtering
+float read_distance_filtered();

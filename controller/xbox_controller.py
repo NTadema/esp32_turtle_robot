@@ -38,7 +38,7 @@ try:
         pygame.event.pump()
 
         # Read axes: y is forward/backward, x is left/right.
-        y = joystick.get_axis(1)  # invert forward/backward
+        y = joystick.get_axis(1)
         x = joystick.get_axis(0)
 
         # Apply deadzone: zero small axis values to avoid drift.

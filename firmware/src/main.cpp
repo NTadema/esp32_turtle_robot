@@ -17,11 +17,6 @@
 unsigned long last_command_time = 0;
 const unsigned long command_timeout = 500; // ms
 
-// Turn variables
-unsigned long turn_start_time = 0;
-bool is_turning = false;
-const unsigned long TURN_DURATION = 500; // ms
-
 // Initialize all components
 void setup() {
     Serial.begin(9600); // Open serial at 9600 baud
@@ -37,6 +32,11 @@ void setup() {
 
 // Main loop
 void loop() {
+    robot_brain_loop();
+}
+
+/* Main loop with manual override
+void loop() {
     // Handle IR remote
     if (IrReceiver.decode()) {
         last_command_time = millis();
@@ -45,13 +45,14 @@ void loop() {
     }
     // Handle UDP WiFi control
     wifi_control_loop();
-
+    bool manual = (millis() - last_command_time <= command_timeout);
+    
     // Decide whether to run robot brain
-    if (millis() - last_command_time > command_timeout) {
-        // No recent manual command, run autonomous brain
-        // Autonomous mode
-        robot_brain_loop();
-    } else {
+    if (manual){
         // Manual control active, do nothing (motors already updated by manual)
     }
+    else {
+        robot_brain_loop();
+    }
 }
+*/
