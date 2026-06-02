@@ -1,4 +1,4 @@
-# ESP32 Turtle Robot
+# ESP32 Turtle Robot (KUONGSHUN Turtle Robot AD177 kit)
 
 This project is a small autonomous robotic platform based on an ESP32, two N20 geared motors, an L298N motor driver, an ultrasonic distance sensor mounted on a servo, and optional manual control interfaces.
 
@@ -8,7 +8,7 @@ The robot supports both autonomous navigation and manual control through Wi-Fi o
 
 ![Turtle Robot Demo](media/turtlebot_demo.gif)
 
-## Features
+## Features (MANUAL CONTROL NOT CORRECTLY IMPLEMENTED)
 
 * Autonomous navigation using a simple behavior-based controller
 
@@ -63,11 +63,6 @@ The robot IP address and additional configuration details can be added here as t
 .
 ├── controller
 │   ├── venv
-│   │   ├── bin
-│   │   ├── include
-│   │   ├── lib
-│   │   ├── lib64 -> lib
-│   │   └── pyvenv.cfg
 │   └── xbox_controller.py
 ├── firmware
 │   ├── include
