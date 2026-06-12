@@ -28,42 +28,40 @@ void translate_ir_signal()
         Serial.println(code, HEX);
     }
 
-    int left = 0;
-    int right = 0;
+    int ir_left_speed = 0;
+    int ir_right_speed = 0;
 
     // Map IR buttons to motor speeds
     switch (code) {
         case 0xB946FF00: // UP
-            left = -IR_DRIVE_SPEED;
-            right = -IR_DRIVE_SPEED;
+            ir_left_speed = -IR_DRIVE_SPEED;
+            ir_right_speed = -IR_DRIVE_SPEED;
             Serial.println("IR: UP");
             break;
         case 0xEA15FF00: // DOWN
-            left = IR_DRIVE_SPEED;
-            right = IR_DRIVE_SPEED;
+            ir_left_speed = IR_DRIVE_SPEED;
+            ir_right_speed = IR_DRIVE_SPEED;
             Serial.println("IR: DOWN");
             break;
         case 0xBB44FF00: // LEFT
-            left = -IR_TURN_SPEED;
-            right = IR_TURN_SPEED;
+            ir_left_speed = -IR_TURN_SPEED;
+            ir_right_speed = IR_TURN_SPEED;
             Serial.println("IR: LEFT");
             break;
         case 0xBC43FF00: // RIGHT
-            left = IR_TURN_SPEED;
-            right = -IR_TURN_SPEED;
+            ir_left_speed = IR_TURN_SPEED;
+            ir_right_speed = -IR_TURN_SPEED;
             Serial.println("IR: RIGHT");
             break;
         case 0xBF40FF00: // OK / STOP
-            left = 0;
-            right = 0;
+            ir_left_speed = 0;
+            ir_right_speed = 0;
             Serial.println("IR: STOP");
             break;
         default:
             Serial.println("IR: Other button");
             break;
     }
-
-    set_motors_speed(left, right);
     last_decoded_raw_data = code;
     IrReceiver.resume();
   }

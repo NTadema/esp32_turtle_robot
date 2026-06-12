@@ -38,7 +38,7 @@ try:
         pygame.event.pump()
 
         # Read axes: y is forward/backward, x is left/right.
-        y = joystick.get_axis(1)
+        y = -joystick.get_axis(1)
         x = joystick.get_axis(0)
 
         # Apply deadzone: zero small axis values to avoid drift.
@@ -48,8 +48,8 @@ try:
             y = 0
 
         # Mix forward/backward (y) and turning (x) into left/right motor speeds.
-        left = axis_to_speed(y + x)
-        right = axis_to_speed(y - x)
+        left = axis_to_speed(y - x)
+        right = axis_to_speed(y + x)
 
         # Format and send the motor speed message as "left,right" over UDP.
         message = f"{left},{right}"

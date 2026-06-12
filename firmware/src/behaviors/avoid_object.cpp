@@ -14,26 +14,12 @@ int obstacle_right_speed = 0;
 
 unsigned long last_time = 0;
 const unsigned long settle_time = 500; // Time in ms to wait for servo to settle before reading distance
-ScanState scan_state = MOVE_FRONT;
+ScanState scan_state = MOVE_LEFT;
 
 void scan_environment() {
     unsigned long now = millis();
 
     switch (scan_state) {
-
-        case MOVE_FRONT:
-            set_ultrasonic_servo_angle(100);
-            last_time = now;
-            scan_state = READ_FRONT;
-            break;
-
-        case READ_FRONT:
-            if (now - last_time >= settle_time) {
-                front_distance = read_distance_median();
-                scan_state = MOVE_LEFT;
-            }
-            break;
-
         case MOVE_LEFT:
             set_ultrasonic_servo_angle(45);
             last_time = now;
@@ -43,6 +29,18 @@ void scan_environment() {
         case READ_LEFT:
             if (now - last_time >= settle_time) {
                 left_distance = read_distance_median();
+                scan_state = MOVE_FRONT;
+            }
+            break;
+        case MOVE_FRONT:
+            set_ultrasonic_servo_angle(100);
+            last_time = now;
+            scan_state = READ_FRONT;
+            break;
+
+        case READ_FRONT:
+            if (now - last_time >= settle_time) {
+                front_distance = read_distance_median();
                 scan_state = MOVE_RIGHT;
             }
             break;
@@ -56,7 +54,19 @@ void scan_environment() {
         case READ_RIGHT:
             if (now - last_time >= settle_time) {
                 right_distance = read_distance_median();
-                scan_state = MOVE_FRONT;
+                scan_state = MOVE_FRONT_AGAIN;
+            }
+            break;
+        case MOVE_FRONT_AGAIN:
+            set_ultrasonic_servo_angle(100);
+            last_time = now;
+            scan_state = READ_FRONT_AGAIN;
+            break;
+
+        case READ_FRONT_AGAIN:
+            if (now - last_time >= settle_time) {
+                front_distance = read_distance_median();
+                scan_state = MOVE_LEFT;
             }
             break;
     }

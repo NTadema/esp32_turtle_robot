@@ -8,7 +8,9 @@ enum ScanState {
     MOVE_LEFT,
     READ_LEFT,
     MOVE_RIGHT,
-    READ_RIGHT
+    READ_RIGHT,
+    MOVE_FRONT_AGAIN,
+    READ_FRONT_AGAIN
 };
 
 extern ScanState scan_state;

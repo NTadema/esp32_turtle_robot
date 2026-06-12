@@ -5,7 +5,7 @@
 int left_line_sensor_value;
 int center_line_sensor_value;
 int right_line_sensor_value;
-int black_Line = 1000; //Define the threshold value for black line detection
+int black_line = 1000; //Define the threshold value for black line detection
 
 // Initialize line tracking sensors
 void trace_sensor_init(){
@@ -17,7 +17,7 @@ void trace_sensor_init(){
 // Check if center sensor detects the line
 bool check_line_center(){
     center_line_sensor_value = analogRead(LINE_SENSOR_CENTER_PIN);
-    if (center_line_sensor_value < black_Line){
+    if (center_line_sensor_value < black_line){
         return true;
     } else {
         return false;
@@ -27,7 +27,7 @@ bool check_line_center(){
 // Check if left sensor detects the line
 bool check_line_left(){
     left_line_sensor_value = analogRead(LINE_SENSOR_LEFT_PIN);
-    if (left_line_sensor_value < black_Line){
+    if (left_line_sensor_value < black_line){
         return true;
     } else {
         return false;
@@ -37,7 +37,7 @@ bool check_line_left(){
 // Check if right sensor detects the line
 bool check_line_right(){
     right_line_sensor_value = analogRead(LINE_SENSOR_RIGHT_PIN);
-    if (right_line_sensor_value < black_Line){
+    if (right_line_sensor_value < black_line){
         return true;
     } else {
         return false;

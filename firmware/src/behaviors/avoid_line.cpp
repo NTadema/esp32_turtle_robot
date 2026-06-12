@@ -14,7 +14,7 @@ void avoid_line_behavior() {
     bool right = check_line_right();
 
     if (center) {
-        line_left_speed = -REVERSE_SPEED;
+        line_left_speed = REVERSE_SPEED;
         line_right_speed = -REVERSE_SPEED;
         return;
     }
@@ -22,7 +22,7 @@ void avoid_line_behavior() {
     if (left && right) {
         // intersection: treat as center or stop
         line_left_speed = -REVERSE_SPEED;
-        line_right_speed = -REVERSE_SPEED;
+        line_right_speed = REVERSE_SPEED;
         return;
     }
 

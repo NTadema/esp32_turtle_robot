@@ -13,9 +13,6 @@
 
 #include "brain/robot_brain.h"
 
-// Global command watchdog
-unsigned long last_command_time = 0;
-const unsigned long command_timeout = 500; // ms
 
 // Initialize all components
 void setup() {
@@ -45,7 +42,7 @@ void loop() {
     }
     // Handle UDP WiFi control
     wifi_control_loop();
-    bool manual = (millis() - last_command_time <= command_timeout);
+    bool manual = (millis() - last_wifi_command_time <= wifi_command_timeout);
     
     // Decide whether to run robot brain
     if (manual){

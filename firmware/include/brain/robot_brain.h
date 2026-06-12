@@ -2,5 +2,5 @@
 
 void robot_brain_loop();
 
-extern unsigned long last_safe_time;
-extern const unsigned long safe_interval;
+// Global command watchdog
+extern const unsigned long wifi_command_timeout;

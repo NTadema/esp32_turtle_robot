@@ -1,50 +1,55 @@
 #include <Arduino.h>
 #include "behaviors/avoid_line.h"
 #include "behaviors/avoid_object.h"
+#include "drivers/wifi_control.h"
 #include "drivers/line_sensor.h"
 #include "drivers/motors.h"
 #include "drivers/ultrasonic_sensor.h"
+#include "brain/robot_brain.h"
 
+const unsigned long wifi_command_timeout = 1000; // ms
 
 void robot_brain_loop()
 {
-    avoid_line_behavior();
-    scan_environment();
-    avoid_object_behavior();
+    wifi_control_loop();
 
-    bool line_detected =
-        check_line_left() || check_line_center() || check_line_right();
+    bool manual =
+        (millis() - last_wifi_command_time <= wifi_command_timeout);
+        
+    int left = 0;
+    int right = 0;
 
-    bool obstacle_detected =
-        (front_distance < OBSTACLE_THRESHOLD or
-         left_distance < OBSTACLE_THRESHOLD or
-         right_distance < OBSTACLE_THRESHOLD);
-
-    int left = FORWARD_SPEED;
-    int right = FORWARD_SPEED;
-
-    // PRIORITY 1: line behavior (strongest safety rule)
-    if (line_detected) {
-        left = line_left_speed;
-        right = line_right_speed;
-    }
-
-    // PRIORITY 2: obstacle behavior
-    else if (obstacle_detected) {
-        // optionally override with obstacle logic variables
-        left = obstacle_left_speed;
-        right = obstacle_right_speed;
-    }
-
-    // PRIORITY 3: default forward motion
-    else if (!line_detected && !obstacle_detected) {
-        left = FORWARD_SPEED;
-        right = FORWARD_SPEED;
+    if (manual) {
+        left = wifi_left_speed;
+        right = wifi_right_speed;
     }
     else {
-        left = 0;
-        right = 0;
+        avoid_line_behavior();
+        scan_environment();
+        avoid_object_behavior();
+
+        bool obstacle_detected =
+            (front_distance < OBSTACLE_THRESHOLD ||
+             left_distance < OBSTACLE_THRESHOLD ||
+             right_distance < OBSTACLE_THRESHOLD);
+
+        bool line_detected =
+            check_line_left() || check_line_center() || check_line_right();
+
+        if (obstacle_detected) {
+            left = obstacle_left_speed;
+            right = obstacle_right_speed;
+        }
+        else if (line_detected) {
+            left = line_left_speed;
+            right = line_right_speed;
+        }
+        else {
+            left = FORWARD_SPEED;
+            right = FORWARD_SPEED;
+        }
     }
+
     set_motors_speed(left, right);
 }
 

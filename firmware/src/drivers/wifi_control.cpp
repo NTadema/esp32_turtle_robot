@@ -8,10 +8,15 @@
 const char* WIFI_SSID = "turtlebot";
 const char* WIFI_PASSWORD = "1234";
 
+// Wi-Fi UDP server
 WiFiUDP udp;
 const int UDP_PORT = 4210;
+char packet_buffer[64]; // buffer to hold incoming packets
 
-char packetBuffer[64]; // buffer to hold incoming packets
+// Variables for storing speeds from WiFi control
+int wifi_left_speed = 0;
+int wifi_right_speed = 0;
+unsigned long last_wifi_command_time = 0;
 
 // Initialize Wi-Fi in Access Point mode
 void wifi_control_init() {
@@ -27,24 +32,22 @@ void wifi_control_init() {
     udp.begin(UDP_PORT);
     Serial.println("UDP server started on port " + String(UDP_PORT));
 }
-
+// Handle incoming Wi-Fi UDP packets to control motor speeds
 void wifi_control_loop() {
-    int packetSize = udp.parsePacket();
+    int packet_size = udp.parsePacket();
 
-    if (packetSize) {
-        int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
-        if (len > 0) packetBuffer[len] = 0;
+    // If a packet is received, read it and parse the speeds
+    if (packet_size) {
+        int len = udp.read(packet_buffer, sizeof(packet_buffer) - 1);
+        if (len > 0) packet_buffer[len] = 0;
 
         // Parse speeds from "left,right"
-        int leftSpeed = 0;
-        int rightSpeed = 0;
-        if (sscanf(packetBuffer, "%d,%d", &leftSpeed, &rightSpeed) == 2) {
-            set_motors_speed(leftSpeed, rightSpeed);
-            last_command_time = millis();
+        if (sscanf(packet_buffer, "%d,%d", &wifi_left_speed, &wifi_right_speed) == 2) {
+            last_wifi_command_time = millis();
             Serial.print("UDP speeds: L=");
-            Serial.print(leftSpeed);
+            Serial.print(wifi_left_speed);
             Serial.print(" R=");
-            Serial.println(rightSpeed);
+            Serial.println(wifi_right_speed);
         }
     }
 }
