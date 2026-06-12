@@ -8,7 +8,7 @@ The robot supports both autonomous navigation and manual control through Wi-Fi o
 
 ![Turtle Robot Demo](media/turtlebot_demo.gif)
 
-## Features (MANUAL CONTROL NOT CORRECTLY IMPLEMENTED)
+## Features
 
 * Autonomous navigation using a simple behavior-based controller
 
@@ -16,7 +16,7 @@ The robot supports both autonomous navigation and manual control through Wi-Fi o
   * Environment scanning using a servo-mounted sensor
   * Automatic turning and avoidance behavior
 * Manual control via Xbox controller over Wi-Fi UDP
-* Manual control via IR remote
+* Manual control via IR remote (NOT CORRECTLY IMPLEMENTED)
 * Automatic fallback to autonomous mode when no manual commands are received
 * Modular firmware structure using PlatformIO
 
@@ -31,7 +31,7 @@ cd firmware
 pio run --target upload
 ```
 
-### Xbox Controller (NOT CORRECTLY IMPLEMENTED)
+### Xbox Controller
 
 1. Power the robot.
 2. Connect your PC to the robot's Wi-Fi network.
